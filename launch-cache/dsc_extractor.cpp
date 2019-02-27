@@ -626,7 +626,7 @@ int dyld_shared_cache_extract_dylibs(const char* shared_cache_file_path, const c
 }
 
 
-#if 0 
+#if 1
 // test program
 #include <stdio.h>
 #include <stddef.h>
@@ -644,7 +644,7 @@ int main(int argc, const char* argv[])
 	}
 	
 	//void* handle = dlopen("/Volumes/my/src/dyld/build/Debug/dsc_extractor.bundle", RTLD_LAZY);
-	void* handle = dlopen("/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/lib/dsc_extractor.bundle", RTLD_LAZY);
+	void* handle = dlopen("dsc_extractor.bundle", RTLD_LAZY);
 	if ( handle == NULL ) {
 		fprintf(stderr, "dsc_extractor.bundle could not be loaded\n");
 		return 1;
