@@ -33,34 +33,64 @@
 #include <sys/mman.h>
 
 #ifdef __APPLE__
+
 #include <sys/syslimits.h>
 #include <libkern/OSByteOrder.h>
+#include <mach-o/fat.h>
+#include <mach-o/arch.h>
+#include <mach-o/loader.h>
+#include <Availability.h>
+
 #elif defined(__linux__)
+
 #include <limits.h>
+#include <endian.h>
+#define OSReadBigInt16(x, y) be16toh(*x)
+#define OSWriteBigInt16(x, y, z) z = htobe16(*x)
+#define OSReadBigInt32(x, y) be32toh(*x)
+#define OSWriteBigInt32(x, y, z) z = htobe32(*x)
+#define OSReadBigInt64(x, y) be64toh(*x)
+#define OSWriteBigInt64(x, y, z) z = htobe64(*x)
+
+#define OSReadLittleInt16(x, y) le16toh(*x)
+#define OSWriteLittleInt16(x, y, z) z = htole16(*x)
+#define OSReadLittleInt32(x, y) le32toh(*x)
+#define OSWriteLittleInt32(x, y, z) z = htole32(*x)
+#define OSReadLittleInt64(x, y) le64toh(*x)
+#define OSWriteLittleInt64(x, y, z) z = htole64(*x)
+
 #include <byteswap.h>
 #define OSSwapHostToBigInt32(x) bswap_32(x)
-#endif
+#include "dsc_iterator.h"
+#include "dsc_extractor.h"
+#include "MachOTrie.hpp"
 
-//#include <mach-o/fat.h>
-//#include <mach-o/arch.h>
-//#include <mach-o/loader.h>
-//#include <Availability.h>
+#endif
 
 #define NO_ULEB 
 #include "Architectures.hpp"
 #include "MachOFileAbstraction.hpp"
 #include "CacheFileAbstraction.hpp"
 
-#include "dsc_iterator.h"
-#include "dsc_extractor.h"
-#include "MachOTrie.hpp"
-
 #include <vector>
 #include <set>
 #include <map>
 #include <unordered_map>
 #include <algorithm>
+
+#ifdef __APPLE__
+
 #include <dispatch/dispatch.h>
+
+#elif defined(__linux__)
+
+#define LC_REQ_DYLD 0x80000000
+#define	LC_LOAD_WEAK_DYLIB (0x18 | LC_REQ_DYLD)
+#define LC_REEXPORT_DYLIB (0x1f | LC_REQ_DYLD)
+#define EXPORT_SYMBOL_FLAGS_KIND_MASK 0x03
+#define EXPORT_SYMBOL_FLAGS_KIND_REGULAR 0x00
+
+#endif
 
 struct seg_info
 {

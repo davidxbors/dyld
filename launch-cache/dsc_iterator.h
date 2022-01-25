@@ -23,7 +23,10 @@
  */
 
 #include <stdint.h>
+/*
 #include <uuid/uuid.h>
+*/
+#include "uuid_uuid.h"
 
 struct dyld_shared_cache_dylib_info {
 	uint32_t		version;		// current version 2
