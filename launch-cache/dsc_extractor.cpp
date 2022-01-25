@@ -31,12 +31,20 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/mman.h>
+
+#ifdef __APPLE__
 #include <sys/syslimits.h>
 #include <libkern/OSByteOrder.h>
-#include <mach-o/fat.h>
-#include <mach-o/arch.h>
-#include <mach-o/loader.h>
-#include <Availability.h>
+#elif defined(__linux__)
+#include <limits.h>
+#include <byteswap.h>
+#define OSSwapHostToBigInt32(x) bswap_32(x)
+#endif
+
+//#include <mach-o/fat.h>
+//#include <mach-o/arch.h>
+//#include <mach-o/loader.h>
+//#include <Availability.h>
 
 #define NO_ULEB 
 #include "Architectures.hpp"
@@ -625,8 +633,6 @@ int dyld_shared_cache_extract_dylibs(const char* shared_cache_file_path, const c
 													^(unsigned , unsigned) {} );
 }
 
-
-#if 1
 // test program
 #include <stdio.h>
 #include <stddef.h>
@@ -660,10 +666,3 @@ int main(int argc, const char* argv[])
 	fprintf(stderr, "dyld_shared_cache_extract_dylibs_progress() => %d\n", result);
 	return 0;
 }
-
-
-#endif
-
- 
- 
-

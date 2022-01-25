@@ -26,8 +26,10 @@
 
 #include <sys/types.h>
 #include <stdint.h>
-#include <mach/shared_region.h>
 
+/*
+#include <mach/shared_region.h>
+*/
 
 struct dyld_cache_header
 {

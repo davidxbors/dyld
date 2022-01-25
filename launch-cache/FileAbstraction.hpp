@@ -27,7 +27,24 @@
 
 #include <stdint.h>
 #include <string.h>
+#ifdef __APPLE__
 #include <libkern/OSByteOrder.h>
+#elif defined(__linux__)
+#include <endian.h>
+#define OSReadBigInt16(x, y) be16toh(*x)
+#define OSWriteBigInt16(x, y, z) z = htobe16(*x)
+#define OSReadBigInt32(x, y) be32toh(*x)
+#define OSWriteBigInt32(x, y, z) z = htobe32(*x)
+#define OSReadBigInt64(x, y) be64toh(*x)
+#define OSWriteBigInt64(x, y, z) z = htobe64(*x)
+
+#define OSReadLittleInt16(x, y) le16toh(*x)
+#define OSWriteLittleInt16(x, y, z) z = htole16(*x)
+#define OSReadLittleInt32(x, y) le32toh(*x)
+#define OSWriteLittleInt32(x, y, z) z = htole32(*x)
+#define OSReadLittleInt64(x, y) le64toh(*x)
+#define OSWriteLittleInt64(x, y, z) z = htole64(*x)
+#endif
 
 #ifdef __OPTIMIZE__
 #define INLINE	__attribute__((always_inline))

@@ -24,10 +24,15 @@
 #ifndef __MACH_O_FILE_ABSTRACTION__
 #define __MACH_O_FILE_ABSTRACTION__
 
+/*
 #include <mach-o/loader.h>
 #include <mach-o/nlist.h>
 #include <mach-o/reloc.h>
 #include <mach/machine.h>
+*/
+
+#include "mach-o_loader.h"
+#include "mach-o_nlist.h"
 
 // suport older versions of mach-o/loader.h
 #ifndef LC_UUID
